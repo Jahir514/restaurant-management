@@ -1,14 +1,18 @@
 import { Request, Response, NextFunction } from 'express'
-import { CustomError } from '../interfaces/error/customError.interface'
 
-export const errorHandler = (
-  error: CustomError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (error.status) {
-    res.status(error.status).json(error.message)
+export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
+  if (error.isOperational) {
+    res.status(error.statusCode).json({
+      status: 'error',
+      message: error.message,
+    })
+  } else {
+    // If the error is programming or unknown (e.g., MongoDB connection issues)
+    console.error('ERROR 💥:', error)
+    // Respond with a generic message, for security reasons
+    res.status(500).json({
+      status: 'error',
+      message: 'Something went wrong!',
+    })
   }
-  res.status(500).json({ message: 'something went wrong.' })
 }

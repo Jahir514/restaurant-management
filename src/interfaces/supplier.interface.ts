@@ -1,4 +1,7 @@
 import { Document, ObjectId } from 'mongoose'
+//-----------------------------------------
+//---------Model Related Interfaces--------
+//-----------------------------------------
 //contact interface
 interface Contact {
   phone?: number[]
@@ -12,17 +15,15 @@ export interface ISupplier extends Document {
   createdAt?: Date
   updateAt?: Date
 }
+
+//-----------------------------------------
+//---------CRUD Realated Interfaces--------
+//-----------------------------------------
 //supplier create interface
 export interface ICreateSupplier {
   serialNo?: number
   name: string
   contact?: Contact
-}
-//supplier create response interface
-export interface ICreateSupplierResponse {
-  success: boolean
-  message: string
-  supplier: null | ISupplier
 }
 //supplier update interface
 export interface IUpdateSupplier {
@@ -30,7 +31,26 @@ export interface IUpdateSupplier {
   name?: string
   contact?: Contact
 }
-//supplier delete interface
-export interface IDeleteSupplier {
-  id: ObjectId
+
+//-----------------------------------------
+//---------Response Realated Interfaces--------
+//-----------------------------------------
+
+//supplier create response interface
+export interface ICreateSupplierResponse {
+  success: boolean
+  message: string
+  supplier: null | ISupplier
+}
+//supplier get response interface
+export interface IGetSupplierResponse {
+  message: string
+  supplier: null | ISupplier | ISupplier[]
+}
+//supplier update response interface
+export interface IUpdateSupplierResponse extends ICreateSupplierResponse {}
+//supplier delete response interface
+export interface IDeleteSupplierResponse {
+  success: boolean
+  message: string
 }
