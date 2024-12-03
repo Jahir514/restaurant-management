@@ -8,7 +8,7 @@ interface Verify {
   date?: Date;
 }
 interface Phone extends Verify {
-  number: string;
+  number?: string;
 }
 interface Contact {
   address: string;
@@ -28,6 +28,7 @@ export interface IUser extends Document {
   contact?: Contact;
   createdAt?: Date;
   updateAt?: Date;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 //-----------------------------------------
@@ -39,12 +40,33 @@ export interface IRegisterUser {
   email: string;
   password: string;
 }
-
+//user login interface
+export interface ILoginUser {
+  email: string;
+  password: string;
+}
 //-----------------------------------------
 //---------Response Related Interfaces--------
 //-----------------------------------------
+//user register response interface
 export interface IRegisterUserResponse {
   success: true;
   message: string;
   user: null | IUser;
+  token?: string;
+}
+//user login response interface
+export interface ILoginUserResponse {
+  success: true;
+  message: string;
+  token?: string;
+  user: null | {
+    name: string;
+    email: string;
+    phone?: Phone;
+    avatar?: string;
+    emailVerify?: Verify;
+    forgotPassword?: Verify;
+    contact?: Contact;
+  };
 }
