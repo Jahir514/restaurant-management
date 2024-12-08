@@ -1,5 +1,5 @@
-import mongoose, { Schema, Model } from 'mongoose'
-import { ISupplier } from '../interfaces/supplier.interface'
+import mongoose, { Schema, Model } from 'mongoose';
+import { ISupplier } from '../interfaces/supplier.interface';
 //create schema
 const supplierSchema = new Schema(
   {
@@ -11,6 +11,7 @@ const supplierSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     contact: {
       phone: [
@@ -22,14 +23,11 @@ const supplierSchema = new Schema(
     },
   },
   { timestamps: true }
-)
+);
 
 //index
-supplierSchema.index({})
+supplierSchema.index({});
 
 //create model
-const Supplier: Model<ISupplier> = mongoose.model<ISupplier>(
-  'Supplier',
-  supplierSchema
-)
-export default Supplier
+const Supplier: Model<ISupplier> = mongoose.model<ISupplier>('Supplier', supplierSchema);
+export default Supplier;
