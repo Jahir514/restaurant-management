@@ -8,6 +8,7 @@ interface Verify {
   date?: Date;
 }
 interface Phone extends Verify {
+  otp?: { code: string; expiresAt: Date };
   number?: string;
 }
 interface Contact {
@@ -18,7 +19,7 @@ interface Contact {
 }
 
 export interface IUser extends Document {
-  name: string;
+  name?: string;
   email: string;
   password: string;
   phone?: Phone;
@@ -36,13 +37,14 @@ export interface IUser extends Document {
 //-----------------------------------------
 //user register interface
 export interface IRegisterUser {
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
+  phone?: string;
   password: string;
 }
 //user login interface
 export interface ILoginUser {
-  email: string;
+  emailOrPhone: string;
   password: string;
 }
 //-----------------------------------------
@@ -61,7 +63,7 @@ export interface ILoginUserResponse {
   message: string;
   token?: string;
   user: null | {
-    name: string;
+    name?: string;
     email: string;
     phone?: Phone;
     avatar?: string;

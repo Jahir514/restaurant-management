@@ -24,6 +24,10 @@ const userSchema = new Schema<IUser>(
         type: Date,
         default: Date.now,
       },
+      otp: {
+        code: { type: String },
+        expiresAt: { type: Date },
+      },
     },
     email: {
       type: String,

@@ -22,3 +22,24 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     next(error);
   }
 };
+
+//send otp to phone controller
+export const sendOTP = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { phone } = req.body;
+    const otpSendResponse = await authService.sendPhoneOtp(phone);
+    res.status(200).json(otpSendResponse);
+  } catch (error) {
+    next(error);
+  }
+};
+//verfy otp register controller
+export const verifyOtpRegister = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { phone, otp, password } = req.body;
+    const result = await authService.completePhoneRegistration({ phone, otp, password });
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+};
