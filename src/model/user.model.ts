@@ -11,7 +11,6 @@ const userSchema = new Schema<IUser>(
     phone: {
       number: {
         type: String,
-        unique: true,
       },
       code: {
         type: Number,

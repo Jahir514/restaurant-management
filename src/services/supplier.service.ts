@@ -8,13 +8,13 @@ import {
   IUpdateSupplierResponse,
 } from '../interfaces/supplier.interface';
 import Supplier from '../model/supplier.model';
-import { AppError } from '../utils/AppError';
+import { BaseError } from '../errors/BaseError';
 
 //create supplier service
 const createSupplier = async (data: ICreateSupplier): Promise<ICreateSupplierResponse> => {
   const { name, contact } = data;
   if (!name) {
-    throw new AppError('Please Provide a supplier Name', 400);
+    throw new BaseError('VALIDATION_ERROR', 400, 'Please Provide a supplier Name');
   }
   //create serial no based on last supplier serial no
   //if no supplier then serial start from 1000
@@ -45,7 +45,7 @@ const createSupplier = async (data: ICreateSupplier): Promise<ICreateSupplierRes
       supplier: supplierData,
     };
   } else {
-    throw new AppError('Failed to create a supplier', 400);
+    throw new BaseError('DATABASE_ERROR', 400, 'Failed to create a supplier');
   }
 };
 
@@ -60,7 +60,7 @@ const getAllSupplier = async (): Promise<IGetSupplierResponse> => {
       supplier: suppliers,
     };
   } else {
-    throw new AppError('No Supplier Found.', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No Supplier Found.');
   }
 };
 
@@ -77,7 +77,7 @@ const getSingleSupplier = async (supplierId: string): Promise<IGetSupplierRespon
       supplier,
     };
   } else {
-    throw new AppError('No Supplier Found.', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No Supplier Found.');
   }
 };
 
@@ -89,7 +89,7 @@ const updateSupplier = async (supplierId: string, data: IUpdateSupplier): Promis
   });
   //if supplier not exist
   if (!supplier) {
-    throw new AppError('No supplier found.', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No supplier found.');
   }
   //if supplier exist, update supplier
   const option = { new: true, runValidators: true };
@@ -102,7 +102,7 @@ const updateSupplier = async (supplierId: string, data: IUpdateSupplier): Promis
       supplier: updatedSupplier,
     };
   } else {
-    throw new AppError('Failed to update supplier.', 400);
+    throw new BaseError('DATABASE_ERROR', 400, 'Failed to update supplier.');
   }
 };
 
@@ -114,7 +114,7 @@ const deleteSupplier = async (supplierId: string): Promise<IDeleteSupplierRespon
   });
   //if supplier not exist
   if (!supplier) {
-    throw new AppError('No supplier found.', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No supplier found.');
   }
   //delete supplier
   const deletedSupplier = await Supplier.findOneAndDelete({ _id: supplierId });

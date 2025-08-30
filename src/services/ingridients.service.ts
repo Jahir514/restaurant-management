@@ -8,13 +8,13 @@ import {
   IUpdateIngridientsResponse,
 } from '../interfaces/ingridients.interface';
 import Ingridients from '../model/ingridients.model';
-import { AppError } from '../utils/AppError';
+import { BaseError } from '../errors/BaseError';
 
 //ingridients create service
 const createIngridients = async (data: ICreateIngridients): Promise<ICreateIngridientsResponse> => {
   const { name, supplier, category, costPrice, salePrice, stock, unit } = data;
   if (!name || !supplier || !category || !costPrice || !salePrice || !stock || !unit)
-    throw new AppError('Please provide correct ingridients information.', 400);
+    throw new BaseError('VALIDATION_ERROR', 400, 'Please provide correct ingridients information.');
   //create serial no based on last ingridients serial no
   //if no ingridients then serial start from 1000
   let serialNo: number = 1000;
@@ -49,7 +49,7 @@ const createIngridients = async (data: ICreateIngridients): Promise<ICreateIngri
       ingridients: ingridentsData,
     };
   } else {
-    throw new AppError('Failed to create ingridients', 400);
+    throw new BaseError('DATABASE_ERROR', 400, 'Failed to create ingridients');
   }
 };
 
@@ -77,7 +77,7 @@ const getSingleIngridients = async (ingridientsId: string): Promise<IGetIngridie
       ingridients,
     };
   } else {
-    throw new AppError('No ingridients found.', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No ingridients found.');
   }
 };
 
@@ -87,7 +87,7 @@ const updateIngridients = async (ingridientsId: string, data: IUpdateIngridients
   const ingridients: IIngridients | null = await Ingridients.findOne({ _id: ingridientsId });
   //throw error if not exist
   if (!ingridients) {
-    throw new AppError('No ingridents found', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No ingridents found');
   }
   //update when it exist
   const option = { new: true, runValidator: true };
@@ -114,7 +114,7 @@ const deleteIngridients = async (ingridientsId: string): Promise<IDeleteIngridie
   const ingridients: IIngridients | null = await Ingridients.findOne({ _id: ingridientsId });
   //throw error if not exist
   if (!ingridients) {
-    throw new AppError('No ingridents  found', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No ingridents  found');
   }
   //delete when it exist
   const deletedIngridients: IIngridients | null = await Ingridients.findByIdAndDelete(ingridientsId).select('name serialNo');

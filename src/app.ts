@@ -1,33 +1,64 @@
-import express from 'express'
-import { databaseConnection } from './config/databaseConnection'
+import express, { Application, Request, Response, NextFunction } from 'express'
+import cors from 'cors'
+import helmet from 'helmet'
+import compression from 'compression'
+import rateLimit from 'express-rate-limit'
+import { config } from './config/env.config'
 import { errorHandler } from './middlewares/errorHandler.middleware'
 import routes from './routes'
-import { AppError } from './utils/AppError'
-import cors from 'cors'
-const app = express()
+import { db } from './config/databaseConnection'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+import { swaggerConfig } from './config/swagger.config'
+
+const app: Application = express()
+
+// Security Middleware
+app.use(helmet())
 app.use(
   cors({
-    origin: '*',
-    optionsSuccessStatus: 200,
+    origin: config.security.corsOrigin,
+    credentials: true,
   })
 )
-//parsing data from body of request
-app.use(express.urlencoded({ extended: false }))
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: config.rateLimit.windowMs,
+  max: config.rateLimit.max,
+})
+app.use(limiter)
+
+// Body parsing Middleware
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(compression())
 
-//main application route
-app.use('/api/v1', routes)
+// API Routes
+app.use(`/api/${config.server.apiVersion}`, routes)
 
-//not found route
-app.use('*', (req, res, next) => {
-  throw new AppError('Not found', 404)
+// Health Check
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).json({ status: 'ok' })
 })
 
-//error handle middleware
+// Swagger Documentation
+const specs = swaggerJsdoc(swaggerConfig)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+
+// Error Handler
 app.use(errorHandler)
 
+// 404 Handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  })
+})
+
 //database connection
-databaseConnection()
+db.connect()
 app.listen(8080, () => console.log('app is running on port 8080'))
 
-export default app
+export { app }

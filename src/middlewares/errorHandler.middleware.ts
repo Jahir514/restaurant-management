@@ -1,18 +1,25 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { BaseError } from '../errors/BaseError';
 
-export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
-  if (error.isOperational) {
-    res.status(error.statusCode).json({
+export const errorHandler: ErrorRequestHandler = (
+  err: Error | BaseError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (err instanceof BaseError) {
+    res.status(err.httpCode).json({
       status: 'error',
-      message: error.message,
-    })
-  } else {
-    // If the error is programming or unknown (e.g., MongoDB connection issues)
-    console.error('ERROR 💥:', error)
-    // Respond with a generic message, for security reasons
-    res.status(500).json({
-      status: 'error',
-      message: 'Something went wrong!',
-    })
+      message: err.message,
+      details: err.details || null
+    });
+    return;
   }
-}
+
+  // Handle unexpected errors
+  console.error('Unexpected error:', err);
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal server error'
+  });
+};

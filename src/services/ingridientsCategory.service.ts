@@ -8,12 +8,12 @@ import {
   IUpdateIngridientsCategoryResponse,
 } from '../interfaces/ingridientsCategory.interface';
 import IngridientsCategory from '../model/ingridientsCategory.model';
-import { AppError } from '../utils/AppError';
+import { BaseError } from '../errors/BaseError';
 
 //ingridients category create service
 const createIngridientsCategory = async (data: ICreateIngridientsCategory): Promise<ICreateIngridientsCategoryResponse> => {
   const { name } = data;
-  if (!name) throw new AppError('Please provide a ingridients category name', 400);
+  if (!name) throw new BaseError('VALIDATION_ERROR', 400, 'Please provide a ingridients category name');
   //create serial no based on last ingridients category serial no
   //if no ingridients category then serial start from 1000
   let serialNo: number = 1000;
@@ -42,7 +42,7 @@ const createIngridientsCategory = async (data: ICreateIngridientsCategory): Prom
       ingridientsCategory: ingridentsCategoryData,
     };
   } else {
-    throw new AppError('Failed to create ingridients category', 400);
+    throw new BaseError('DATABASE_ERROR', 400, 'Failed to create ingridients category');
   }
 };
 
@@ -70,7 +70,7 @@ const getSingleIngridientsCategory = async (ingridientsCategoryId: string): Prom
       ingridientsCategory,
     };
   } else {
-    throw new AppError('No ingridients category found.', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No ingridients category found.');
   }
 };
 
@@ -80,7 +80,7 @@ const updateIngridientsCategory = async (ingridientsCategoryId: string, data: IU
   const ingridientsCategory: IIngridientsCategory | null = await IngridientsCategory.findOne({ _id: ingridientsCategoryId });
   //throw error if not exist
   if (!ingridientsCategory) {
-    throw new AppError('No ingridents category found', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No ingridents category found');
   }
   //update when it exist
   const option = { new: true, runValidator: true };
@@ -109,7 +109,7 @@ const deleteIngridientsCategory = async (ingridientsCategoryId: string): Promise
   const ingridientsCategory: IIngridientsCategory | null = await IngridientsCategory.findOne({ _id: ingridientsCategoryId });
   //throw error if not exist
   if (!ingridientsCategory) {
-    throw new AppError('No ingridents category found', 400);
+    throw new BaseError('NOT_FOUND', 400, 'No ingridents category found');
   }
   //delete when it exist
   const deletedIngridientsCategory: IIngridientsCategory | null = await IngridientsCategory.findByIdAndDelete(ingridientsCategoryId).select('name serialNo');

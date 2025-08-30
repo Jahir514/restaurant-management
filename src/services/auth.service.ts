@@ -1,17 +1,18 @@
+import { BaseError } from '../errors/BaseError';
 import { ILoginUser, ILoginUserResponse, IRegisterUser, IRegisterUserResponse, IUser } from '../interfaces/user.interface';
 import User from '../model/user.model';
-import { AppError } from '../utils/AppError';
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 import { formatAndValidateBDPhone } from '../utils/validatePhone';
 import { generateOtp, otpExpiry } from '../utils/otp';
+
 dotenv.config();
 const jwt_secret = process.env.JWT_SECRET || 'Restaurant112000';
 
 //send OTP
 export const sendPhoneOtp = async (phone: string) => {
   const formatted = formatAndValidateBDPhone(phone);
-  if (!formatted) throw new AppError('Invalid phone', 400);
+  if (!formatted) throw new BaseError('VALIDATION_ERROR', 400, 'Invalid phone');
 
   const otp = generateOtp();
   const expiresAt = otpExpiry();
@@ -21,7 +22,7 @@ export const sendPhoneOtp = async (phone: string) => {
     user = new User({ phone: { number: formatted, status: false, otp: { code: otp, expiresAt } } });
   } else {
     if (!user.phone || !user.phone.number) {
-      throw new AppError('Phone number not found for user', 400);
+      throw new BaseError('VALIDATION_ERROR', 400, 'Phone number not found for user');
     } else {
       user.phone.otp = { code: otp, expiresAt };
     }
@@ -34,13 +35,13 @@ export const sendPhoneOtp = async (phone: string) => {
 // Verify OTP
 export const verifyPhoneOtp = async (phone: string, otp: string) => {
   const formatted = formatAndValidateBDPhone(phone);
-  if (!formatted) throw new AppError('Invalid phone number', 400);
+  if (!formatted) throw new BaseError('VALIDATION_ERROR', 400, 'Invalid phone number');
 
   const user = await User.findOne({ 'phone.number': formatted });
-  if (!user || !user.phone?.otp?.code) throw new AppError('OTP not found', 404);
+  if (!user || !user.phone?.otp?.code) throw new BaseError('NOT_FOUND', 404, 'OTP not found');
 
-  if (user.phone.otp.code !== otp) throw new AppError('Incorrect OTP', 400);
-  if (new Date() > new Date(user.phone.otp.expiresAt)) throw new AppError('OTP expired', 400);
+  if (user.phone.otp.code !== otp) throw new BaseError('VALIDATION_ERROR', 400, 'Incorrect OTP');
+  if (new Date() > new Date(user.phone.otp.expiresAt)) throw new BaseError('VALIDATION_ERROR', 400, 'OTP expired');
 
   user.phone.status = true;
   user.phone.otp = undefined;
@@ -66,13 +67,13 @@ const register = async (userData: IRegisterUser): Promise<IRegisterUserResponse>
   const { email, password } = userData;
   //check for empty fields
   if (!email || !password) {
-    throw new AppError('Name, Email and Password is required', 400);
+    throw new BaseError('VALIDATION_ERROR', 400, 'Name, Email and Password is required');
   }
 
   //check if user exist
   const existUser: IUser | null = await User.findOne({ email: email });
   if (existUser) {
-    throw new AppError('User Already Exist', 400);
+    throw new BaseError('VALIDATION_ERROR', 400, 'User Already Exist');
   }
   //create new user object
   const newUser = new User({
@@ -83,10 +84,11 @@ const register = async (userData: IRegisterUser): Promise<IRegisterUserResponse>
   const savedUser: IUser | null = await newUser.save();
   //handle response
   if (!savedUser) {
-    throw new AppError('Failed to create User', 400);
+    throw new BaseError('DATABASE_ERROR', 400, 'Failed to create User');
   }
   const savedUserData = await User.findById({ _id: savedUser._id }).select('name email contact phone');
   const token = jwt.sign({ id: savedUserData?._id, email: savedUserData?.email }, jwt_secret, { expiresIn: '1h' });
+  console.log('user', savedUserData);
   return {
     success: true,
     message: 'Successfully create an User.',
@@ -101,13 +103,13 @@ const login = async (data: ILoginUser): Promise<ILoginUserResponse> => {
   let loginField = emailOrPhone;
   //check for empty fields
   if (!emailOrPhone || !password) {
-    throw new AppError('Email and Password is required', 400);
+    throw new BaseError('VALIDATION_ERROR', 400, 'Email and Password is required');
   }
   //check valid phone number
   if (!loginField.includes('@')) {
     const formattedPhone = formatAndValidateBDPhone(loginField);
     if (!formattedPhone) {
-      throw new AppError('Invalid Bangladeshi phone number', 400);
+      throw new BaseError('VALIDATION_ERROR', 400, 'Invalid Bangladeshi phone number');
     }
     loginField = formattedPhone;
   }
@@ -116,12 +118,12 @@ const login = async (data: ILoginUser): Promise<ILoginUserResponse> => {
   //check if user exist
   const existUser = await User.findOne(query);
   if (!existUser) {
-    throw new AppError('User Not Found', 400);
+    throw new BaseError('NOT_FOUND', 400, 'User Not Found');
   }
   //compare password
   const isMatch = await existUser?.comparePassword(password);
   if (!isMatch) {
-    throw new AppError('Password Invalid.', 400);
+    throw new BaseError('AUTH_ERROR', 400, 'Password Invalid.');
   }
   const token = jwt.sign({ id: existUser?._id, email: existUser?.email }, jwt_secret, { expiresIn: '1h' });
   const userData = {
