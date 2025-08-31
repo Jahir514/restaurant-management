@@ -1,0 +1,31 @@
+Restaurant-Management
+---------------General Setting for those who wants to buy this Application-------------
+#can use this for single branch or multiple branch. If use multiple branch can transfer food or ingredients from one branch 
+ to another.
+#can use it as a buffer restaurant or simple food selling or for both.
+#must use requisition for receiving or receiving without requisition.
+#getting ingredients with or without supplier.
+
+---------------Ingridients Management------------------
+#ingredients for creating food
+#category for ingredients
+#supplier for suppling ingredients
+#ingredients stock management system
+#requisition system for ordering ingredients from supplier
+#receiving system based on requisition or without requisition for updating ingredients stock coming from supplier
+#return system to return ingredients if needed to supplier
+
+----------------Food Management----------------------
+#food model, food can be created using recipe either buy from outside
+#category for foods
+#recipe to create a food
+#food stock management
+
+-----------------Food Serving Management-----------------------
+# buffet system to create buffet menu
+#simple food like rice, meat, fish sale.
+#Table model to manage sitting plan
+
+-----------------Accounts Management------------------------
+#full Accounts system from ingredients price to create food and sale it customer.
+

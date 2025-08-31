@@ -1,56 +1,122 @@
-import mongoose, { Schema, Model } from 'mongoose';
-import { IIngridients } from '../interfaces/ingridients.interface';
-//create schema
+import mongoose, { Schema, Model } from "mongoose";
+import { IIngridients } from "../interfaces/ingridients.interface";
+
+import config from "../config/app.config";
+
+// Improved schema for ingredients
 const ingridientsSchema = new Schema<IIngridients>(
   {
     serialNo: {
       type: Number,
       required: true,
+      index: true,
     },
     name: {
       type: String,
-      retquired: true,
-      unique: true,
+      required: true,
       trim: true,
+      index: true,
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'IngridentsCategory',
+      ref: "IngridientsCategory",
       required: true,
+      index: true,
     },
     supplier: {
+      type: [Schema.Types.ObjectId],
+      ref: "Supplier",
+      required: false,
+      index: true,
+    },
+    branch: {
       type: Schema.Types.ObjectId,
-      ref: 'Supplier',
-      required: true,
+      ref: "Branch",
+      required: config.MULTI_BRANCH,
+      index: true,
     },
     costPrice: {
       type: Number,
       required: true,
+      min: 0,
     },
     salePrice: {
       type: Number,
       required: true,
+      min: 0,
     },
     stock: {
       type: Number,
       required: true,
+      min: 0,
+    },
+    minStockLevel: {
+      type: Number,
+      required: false,
+      default: 0,
+      min: 0,
+    },
+    reorderLevel: {
+      type: Number,
+      required: false,
+      default: 0,
+      min: 0,
     },
     unit: {
       type: String,
       required: true,
+      enum: ["kg", "g", "l", "ml", "pcs", "pack", "other"],
+      default: "pcs",
     },
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+      index: true,
+    },
+    stockHistory: [
+      {
+        date: { type: Date, default: Date.now },
+        change: { type: Number, required: true },
+        reason: { type: String },
+        user: { type: Schema.Types.ObjectId, ref: "User" },
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
 
-//index
-ingridientsSchema.index({});
+// Indexes for performance
+ingridientsSchema.index({ name: 1, branch: 1 }, { unique: true });
+ingridientsSchema.index({ category: 1 });
+ingridientsSchema.index({ supplier: 1 });
+ingridientsSchema.index({ branch: 1 });
+ingridientsSchema.index({ status: 1 });
 
-//create model
-const Ingridients: Model<IIngridients> = mongoose.model<IIngridients>('Ingridents', ingridientsSchema);
+// Static method for branch-aware queries
+ingridientsSchema.statics.branchFilter = function (branchId?: string) {
+  // If multi-branch is enabled, filter by branch; otherwise, return all
+  if (config.MULTI_BRANCH && branchId) {
+    return { branch: branchId };
+  }
+  return {};
+};
+
+// Create model
+const Ingridients: Model<IIngridients> = mongoose.model<IIngridients>("Ingridients", ingridientsSchema);
 export default Ingridients;
+
+/**
+ * Usage pattern for branch-aware queries:
+ *
+ * import Ingridients from '../model/ingridients.model';
+ * const branchFilter = Ingridients.branchFilter(req.branch);
+ * const ingredients = await Ingridients.find({ ...branchFilter, ...otherFilters });
+ *
+ * This pattern should be used throughout the project for all branch-specific models.
+ */
 
 /**
  * @swagger
@@ -62,7 +128,7 @@ export default Ingridients;
  *         - serialNo
  *         - name
  *         - category
- *         - supplier
+ *         # - supplier (optional)
  *         - costPrice
  *         - salePrice
  *         - stock
@@ -75,6 +141,10 @@ export default Ingridients;
  *         category:
  *           type: string
  *         supplier:
+ *           type: array
+ *           items:
+ *             type: string
+ *         branch:
  *           type: string
  *         costPrice:
  *           type: number
@@ -82,17 +152,48 @@ export default Ingridients;
  *           type: number
  *         stock:
  *           type: number
+ *         minStockLevel:
+ *           type: number
+ *         reorderLevel:
+ *           type: number
  *         unit:
  *           type: string
+ *           enum: ["kg", "g", "l", "ml", "pcs", "pack", "other"]
+ *         status:
+ *           type: string
+ *           enum: ["active", "inactive"]
+ *         stockHistory:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               date:
+ *                 type: string
+ *                 format: date-time
+ *               change:
+ *                 type: number
+ *               reason:
+ *                 type: string
+ *               user:
+ *                 type: string
  *       example:
  *         serialNo: 1
  *         name: "Tomato"
- *         category: "Vegetables"
- *         supplier: "Supplier A"
+ *         category: "64f1c2e2a1b2c3d4e5f6a7b8"
+ *         supplier: ["64f1c2e2a1b2c3d4e5f6a7b9"]
+ *         branch: "64f1c2e2a1b2c3d4e5f6a7c0"
  *         costPrice: 10
  *         salePrice: 15
  *         stock: 100
+ *         minStockLevel: 10
+ *         reorderLevel: 20
  *         unit: "kg"
+ *         status: "active"
+ *         stockHistory:
+ *           - date: "2025-08-31T12:00:00.000Z"
+ *             change: 50
+ *             reason: "Initial stock"
+ *             user: "64f1c2e2a1b2c3d4e5f6a7c1"
  */
 
 /**

@@ -1,4 +1,5 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId } from "mongoose";
+import { DataResponse, PaginatedResponse } from "../types/response.types";
 //-----------------------------------------
 //---------Model Related Interfaces--------
 //-----------------------------------------
@@ -6,59 +7,60 @@ import { Document, ObjectId } from 'mongoose';
 export interface IIngridients extends Document {
   serialNo: number;
   name: string;
-  supplier: ObjectId;
+  supplier?: ObjectId[];
   category: ObjectId;
+  branch?: ObjectId;
   costPrice: number;
   salePrice: number;
   stock: number;
-  unit: string;
+  minStockLevel?: number;
+  reorderLevel?: number;
+  unit: "kg" | "g" | "l" | "ml" | "pcs" | "pack" | "other";
+  status?: "active" | "inactive";
+  stockHistory?: Array<{
+    date: Date;
+    change: number;
+    reason?: string;
+    user?: ObjectId;
+  }>;
   createdAt?: Date;
-  updateAt?: Date;
+  updatedAt?: Date;
 }
 
 //-----------------------------------------
 //---------CRUD Realated Interfaces--------
 //-----------------------------------------
-//ingridients  create interface
+//ingridients create interface
 export interface ICreateIngridients {
   serialNo: number;
   name: string;
-  supplier: ObjectId;
+  supplier: ObjectId[];
   category: ObjectId;
+  branch?: ObjectId;
   costPrice: number;
   salePrice: number;
   stock: number;
-  unit: string;
+  minStockLevel?: number;
+  reorderLevel?: number;
+  unit: "kg" | "g" | "l" | "ml" | "pcs" | "pack" | "other";
+  status?: "active" | "inactive";
 }
-//ingridients  update interface
+//ingridients update interface
 export interface IUpdateIngridients {
   serialNo?: number;
   name?: string;
-  supplier?: ObjectId;
+  supplier?: ObjectId[];
   category?: ObjectId;
+  branch?: ObjectId;
   costPrice?: number;
   salePrice?: number;
   stock?: number;
-  unit?: string;
+  minStockLevel?: number;
+  reorderLevel?: number;
+  unit?: "kg" | "g" | "l" | "ml" | "pcs" | "pack" | "other";
+  status?: "active" | "inactive";
 }
 //-----------------------------------------
-//---------Response Realated Interfaces--------
-//-----------------------------------------
-//ingridients  create response interface
-export interface ICreateIngridientsResponse {
-  success: boolean;
-  message: string;
-  ingridients: null | IIngridients;
-}
-//ingridients  get response interface
-export interface IGetIngridientsResponse {
-  message: string;
-  ingridients: null | IIngridients | IIngridients[];
-}
-//ingridients  update response interface
-export interface IUpdateIngridientsResponse extends ICreateIngridientsResponse {}
-//ingridients  delete response interface
-export interface IDeleteIngridientsResponse {
-  success: boolean;
-  message: string;
-}
+//---------Response Related Types (use generics)--------
+// Single item response: DataResponse<IIngridients>
+// Paginated list response: PaginatedResponse<IIngridients>

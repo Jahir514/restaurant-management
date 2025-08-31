@@ -1,25 +1,31 @@
-import { Request, Response, NextFunction } from 'express';
-import ingridientsService from '../services/ingridients.service';
-//ingridients  create controller
+import { Request, Response, NextFunction } from "express";
+import ingridientsService from "../services/ingridients.service";
+
+// Controller for creating a new ingredient
+// Supports optional supplier field
 export const createIngridients = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
+    // If supplier is not provided, allow creation (supplier is optional)
     const ingridentsCreateRes = await ingridientsService.createIngridients(data);
-    res.status(200).json(ingridentsCreateRes);
+    res.status(201).json(ingridentsCreateRes);
   } catch (error) {
     next(error);
   }
 };
-//get all ingridients  controller
+
+// Controller for getting all ingredients (supports branch-aware queries)
 export const getAllIngridients = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // Optionally, pass branch info if your service supports it: req.branch
     const ingridentsGetRes = await ingridientsService.getAllIngridients();
     res.status(200).json(ingridentsGetRes);
   } catch (error) {
     next(error);
   }
 };
-//get single ingridients  controller
+
+// Controller for getting a single ingredient by ID
 export const getSingleIngridients = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const ingredientsId = req.params.id;
@@ -29,7 +35,8 @@ export const getSingleIngridients = async (req: Request, res: Response, next: Ne
     next(error);
   }
 };
-//ingridients  update controller
+
+// Controller for updating an ingredient (supplier remains optional)
 export const updateIngridients = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const ingredientsId = req.params.id;
@@ -40,7 +47,8 @@ export const updateIngridients = async (req: Request, res: Response, next: NextF
     next(error);
   }
 };
-//ingridients  delete controller
+
+// Controller for deleting an ingredient
 export const deleteIngridients = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const ingredientsId = req.params.id;
