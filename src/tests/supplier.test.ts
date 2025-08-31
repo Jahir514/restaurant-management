@@ -47,7 +47,7 @@
 // })
 
 import request from 'supertest';
-import app from '../app';
+import {app} from '../app';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, disconnect, connection } from 'mongoose';
 

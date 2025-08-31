@@ -57,8 +57,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   })
 })
 
-//database connection
-db.connect()
-app.listen(8080, () => console.log('app is running on port 8080'))
+
+// ...existing code...
 
 export { app }

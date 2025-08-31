@@ -4,8 +4,9 @@
   "description": "A fully functional restaurant management application",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc && node ./dist/src/app.js",
-    "dev": "nodemon -e ts --exec \"npm run compile\"",
+  "compile": "tsc",
+  "start": "node ./dist/src/server.js",
+  "dev": "nodemon --watch src --exec \"npm run compile && node ./dist/src/server.js\"",
     "test": "jest"
   },
   "author": "jahir hasan",
