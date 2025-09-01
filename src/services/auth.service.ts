@@ -1,6 +1,6 @@
 import { BaseError } from '../errors/BaseError';
 import { ILoginUser, ILoginUserResponse, IRegisterUser, IRegisterUserResponse, IUser } from '../interfaces/user.interface';
-import User from '../model/user.model';
+import User from '../models/user.model';
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 import { formatAndValidateBDPhone } from '../utils/validatePhone';

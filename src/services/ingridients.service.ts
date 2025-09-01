@@ -1,7 +1,7 @@
 
 import { ICreateIngridients, IIngridients, IUpdateIngridients } from "../interfaces/ingridients.interface";
 import { DataResponse, PaginatedResponse } from "../types/response.types";
-import Ingridients from "../model/ingridients.model";
+import Ingridients from "../models/ingridients.model";
 import { BaseError } from "../errors/BaseError";
 import { BaseService } from "./base.service";
 

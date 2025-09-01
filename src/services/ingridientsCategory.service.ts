@@ -5,7 +5,7 @@ import {
 } from "../interfaces/ingridientsCategory.interface";
 // Response types: use DataResponse<IIngridientsCategory> and PaginatedResponse<IIngridientsCategory> from '../types/response.types'
 import { DataResponse, PaginatedResponse } from "../types/response.types";
-import IngridientsCategory from "../model/ingridientsCategory.model";
+import IngridientsCategory from "../models/ingridientsCategory.model";
 import { BaseError } from "../errors/BaseError";
 
 //ingridients category create service

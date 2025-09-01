@@ -4,11 +4,11 @@
  */
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import Branch from "../model/branch.model";
-import IngridientsCategory from "../model/ingridientsCategory.model";
-import Ingridients from "../model/ingridients.model";
-import Supplier from "../model/supplier.model";
-import User from "../model/user.model";
+import Branch from "../models/branch.model";
+import IngridientsCategory from "../models/ingridientsCategory.model";
+import Ingridients from "../models/ingridients.model";
+import Supplier from "../models/supplier.model";
+import User from "../models/user.model";
 
 dotenv.config();
 

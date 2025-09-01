@@ -7,7 +7,7 @@ import {
   IUpdateSupplier,
   IUpdateSupplierResponse,
 } from '../interfaces/supplier.interface';
-import Supplier from '../model/supplier.model';
+import Supplier from '../models/supplier.model';
 import { BaseError } from '../errors/BaseError';
 
 //create supplier service
