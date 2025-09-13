@@ -10,9 +10,12 @@ import Ingridients from "../models/ingridients.model";
 import Supplier from "../models/supplier.model";
 import User from "../models/user.model";
 
+import Food from "../models/foods.model";
+
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/restaurant-management";
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://localhost:27017/restaurant-management";
 
 async function seed() {
   try {
@@ -21,8 +24,18 @@ async function seed() {
 
     // Seed branches
     const branches = await Branch.insertMany([
-      { name: "Main Branch", code: "BR001", address: "123 Main St", status: "active" },
-      { name: "Second Branch", code: "BR002", address: "456 Second St", status: "active" },
+      {
+        name: "Main Branch",
+        code: "BR001",
+        address: "123 Main St",
+        status: "active",
+      },
+      {
+        name: "Second Branch",
+        code: "BR002",
+        address: "456 Second St",
+        status: "active",
+      },
     ]);
     console.log("Branches seeded:", branches.length);
 
@@ -35,15 +48,33 @@ async function seed() {
 
     // Seed suppliers
     const suppliers = await Supplier.insertMany([
-      { serialNo: 2001, name: "Fresh Farm", contact: { phone: [1234567890], address: "Farm Road" } },
-      { serialNo: 2002, name: "Meat House", contact: { phone: [9876543210], address: "Meat Street" } },
+      {
+        serialNo: 2001,
+        name: "Fresh Farm",
+        contact: { phone: [1234567890], address: "Farm Road" },
+      },
+      {
+        serialNo: 2002,
+        name: "Meat House",
+        contact: { phone: [9876543210], address: "Meat Street" },
+      },
     ]);
     console.log("Suppliers seeded:", suppliers.length);
 
     // Seed users
     const users = await User.insertMany([
-      { name: "Admin", email: "admin@restaurant.com", password: "admin123", contact: { address: "HQ" } },
-      { name: "Manager", email: "manager@restaurant.com", password: "manager123", contact: { address: "Branch" } },
+      {
+        name: "Admin",
+        email: "admin@restaurant.com",
+        password: "admin123",
+        contact: { address: "HQ" },
+      },
+      {
+        name: "Manager",
+        email: "manager@restaurant.com",
+        password: "manager123",
+        contact: { address: "Branch" },
+      },
     ]);
     console.log("Users seeded:", users.length);
 
@@ -75,6 +106,33 @@ async function seed() {
       },
     ]);
     console.log("Ingredients seeded");
+
+    // Seed foods/package menus
+    await Food.insertMany([
+      {
+        name: "Tahari",
+        slug: "tahari",
+        description: "Beef Tahari",
+        price: 260.0,
+        discount_price: null,
+        status: "1",
+        featured: "1",
+        created_at: new Date("2022-10-23T23:01:12.000Z"),
+        updated_at: new Date("2023-10-04T15:43:13.000Z"),
+      },
+      {
+        name: "Chicken Biryani",
+        slug: "chicken-biryani",
+        description: "Chicken Biryani, Raita, Drinks",
+        price: 320.0,
+        discount_price: 300.0,
+        status: "1",
+        featured: "0",
+        created_at: new Date("2022-11-01T12:00:00.000Z"),
+        updated_at: new Date("2023-10-05T10:20:00.000Z"),
+      },
+    ]);
+    console.log("Foods/package menus seeded");
 
     await mongoose.disconnect();
     console.log("Seeding complete.");
