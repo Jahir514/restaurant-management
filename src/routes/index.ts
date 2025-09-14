@@ -4,6 +4,8 @@ import ingridientsCategoryRoutes from "./ingridientCategory.routes";
 import ingridientsRoutes from "./ingridients.routes";
 import authRoutes from "./auth.routes";
 import foodRoutes from "./foods.routes";
+import foodCategoryRoutes from "./foodsCategory.routes";
+import restaurantTableRoutes from "./restaurantTable.routes";
 const router = Router();
 
 //all features route
@@ -11,10 +13,14 @@ const router = Router();
 router.use("/auth", authRoutes);
 //supplier routes
 router.use("/supplier", supplierRoutes);
-//ingridients category routes
+//ingredients category routes
 router.use("/ingredients-category", ingridientsCategoryRoutes);
-//ingridients category routes
+//ingredients routes
 router.use("/ingredients", ingridientsRoutes);
-//ingridients category routes
+//foods routes
 router.use("/foods", foodRoutes);
+//foods category routes
+router.use("/foods-category", foodCategoryRoutes);
+//restaurant table routes
+router.use("/restaurant-table", restaurantTableRoutes);
 export default router;
