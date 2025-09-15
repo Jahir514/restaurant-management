@@ -1,53 +1,52 @@
-import { NextFunction, Request, Response } from 'express'
-import supplierService from '../services/supplier.service'
-import { ICreateSupplierResponse, IGetSupplierResponse, IUpdateSupplier, IUpdateSupplierResponse } from '../interfaces/supplier.interface'
-//supplier create controller
+import { Request, Response, NextFunction } from "express";
+import * as supplierService from "../services/supplier.service";
+
 export const createSupplier = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, contact } = req.body
-    const createSupplierResponse: ICreateSupplierResponse = await supplierService.createSupplier({ name, contact })
-    res.status(201).json(createSupplierResponse)
+    const data = req.body;
+    const result = await supplierService.createSupplier(data);
+    res.status(201).json(result);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
-//get all supplier controller
+};
+
 export const getAllSupplier = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const getAllSupplierResponse: IGetSupplierResponse = await supplierService.getAllSupplier()
-    res.status(200).json(getAllSupplierResponse)
+    const result = await supplierService.getAllSupplier();
+    res.status(200).json(result);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
-//get single supplier
+};
+
 export const getSingleSupplier = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const id: string = req.params.id
-    const getSingleSupplierResponse: IGetSupplierResponse = await supplierService.getSingleSupplier(id)
-    res.status(200).json(getSingleSupplierResponse)
+    const supplierId = req.params.id;
+    const result = await supplierService.getSingleSupplier(supplierId);
+    res.status(200).json(result);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
-//update supplier
+};
+
 export const updateSupplier = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const supplierId: string = req.params.id
-    const data: IUpdateSupplier = req.body
-    const supplierUpdateResponse: IUpdateSupplierResponse = await supplierService.updateSupplier(supplierId, data)
-    res.status(200).json(supplierUpdateResponse)
+    const supplierId = req.params.id;
+    const data = req.body;
+    const result = await supplierService.updateSupplier(supplierId, data);
+    res.status(200).json(result);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
-//delete supplier
+};
+
 export const deleteSupplier = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const supplierId: string = req.params.id
-    const supplierDeleteResposne = await supplierService.deleteSupplier(supplierId)
-    res.status(200).json(supplierDeleteResposne)
+    const supplierId = req.params.id;
+    const result = await supplierService.deleteSupplier(supplierId);
+    res.status(200).json(result);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};

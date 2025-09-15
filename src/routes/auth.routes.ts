@@ -5,8 +5,8 @@
  *   description: Authentication endpoints
  */
 
-import { Router } from 'express';
-import { login, register, sendOTP, verifyOtpRegister } from '../controllers/auth.controller';
+import { Router } from "express";
+import { register, login, sendOTP, verifyOtpRegister } from "../controllers/auth.controller";
 const router = Router();
 
 /**
@@ -27,7 +27,7 @@ const router = Router();
  *       400:
  *         description: Invalid input
  */
-router.post('/register', register);
+router.post("/register", register);
 /**
  * @swagger
  * /auth/login:
@@ -46,7 +46,7 @@ router.post('/register', register);
  *       400:
  *         description: Invalid credentials
  */
-router.post('/login', login);
+router.post("/login", login);
 /**
  * @swagger
  * /auth/send-otp:
@@ -65,7 +65,7 @@ router.post('/login', login);
  *       400:
  *         description: Invalid input
  */
-router.post('/send-otp', sendOTP);
+router.post("/send-otp", sendOTP);
 /**
  * @swagger
  * /auth/verify-otp-register:
@@ -84,6 +84,6 @@ router.post('/send-otp', sendOTP);
  *       400:
  *         description: Invalid or expired OTP
  */
-router.post('/verify-otp-register', verifyOtpRegister);
+router.post("/verify-otp-register", verifyOtpRegister);
 
 export default router;

@@ -1,21 +1,52 @@
-import { BaseController } from "./base.controller";
-import foodService from "../services/foods.service";
+import { Request, Response, NextFunction } from "express";
+import * as foodService from "../services/foods.service";
 
-/**
- * FoodController
- *
- * Extends BaseController to provide standard CRUD endpoints for foods/package menus.
- * Custom endpoints can be added as needed.
- */
-export class FoodController extends BaseController<typeof foodService> {
-  constructor() {
-    super(foodService);
+export const createFood = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.body;
+    const result = await foodService.createFood(data);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
   }
+};
 
-  // Add custom endpoints for foods here if needed
-  // Example:
-  // async customEndpoint(req: Request, res: Response, next: NextFunction) { ... }
-}
+export const getAllFood = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await foodService.getAllFood();
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
-// Export a singleton instance for use in routes
-export const foodController = new FoodController();
+export const getSingleFood = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foodId = req.params.id;
+    const result = await foodService.getSingleFood(foodId);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateFood = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foodId = req.params.id;
+    const data = req.body;
+    const result = await foodService.updateFood(foodId, data);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteFood = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foodId = req.params.id;
+    const result = await foodService.deleteFood(foodId);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};

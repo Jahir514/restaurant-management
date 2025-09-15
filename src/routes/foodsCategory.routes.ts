@@ -6,7 +6,13 @@
  */
 
 import { Router } from "express";
-import { foodsCategoryController } from "../controllers/foodsCategory.controller";
+import {
+  createFoodsCategory,
+  getAllFoodsCategory,
+  getSingleFoodsCategory,
+  updateFoodsCategory,
+  deleteFoodsCategory,
+} from "../controllers/foodsCategory.controller";
 const router = Router();
 
 /**
@@ -27,7 +33,7 @@ const router = Router();
  *       400:
  *         description: Invalid input
  */
-router.post("/", foodsCategoryController.create.bind(foodsCategoryController));
+router.post("/", createFoodsCategory);
 /**
  * @swagger
  * /foods-category:
@@ -38,7 +44,7 @@ router.post("/", foodsCategoryController.create.bind(foodsCategoryController));
  *       200:
  *         description: List of foods categories
  */
-router.get("/", foodsCategoryController.getAll.bind(foodsCategoryController));
+router.get("/", getAllFoodsCategory);
 /**
  * @swagger
  * /foods-category/{id}:
@@ -58,10 +64,7 @@ router.get("/", foodsCategoryController.getAll.bind(foodsCategoryController));
  *       404:
  *         description: Foods category not found
  */
-router.get(
-  "/:id",
-  foodsCategoryController.getOne.bind(foodsCategoryController)
-);
+router.get("/:id", getSingleFoodsCategory);
 /**
  * @swagger
  * /foods-category/{id}:
@@ -87,10 +90,7 @@ router.get(
  *       404:
  *         description: Foods category not found
  */
-router.patch(
-  "/:id",
-  foodsCategoryController.update.bind(foodsCategoryController)
-);
+router.patch("/:id", updateFoodsCategory);
 /**
  * @swagger
  * /foods-category/{id}:
@@ -110,9 +110,6 @@ router.patch(
  *       404:
  *         description: Foods category not found
  */
-router.delete(
-  "/:id",
-  foodsCategoryController.delete.bind(foodsCategoryController)
-);
+router.delete("/:id", deleteFoodsCategory);
 
 export default router;

@@ -9,7 +9,6 @@ const foodSchema = new Schema<IFood>(
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
     description: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },

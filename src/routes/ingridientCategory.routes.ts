@@ -5,14 +5,14 @@
  *   description: Ingredient category management endpoints
  */
 
-import { Router } from 'express';
+import { Router } from "express";
 import {
   createIngridientsCategory,
-  deleteIngridientsCategory,
   getAllIngridientsCategory,
   getSingleIngridientsCategory,
   updateIngridientsCategory,
-} from '../controllers/ingridientsCategory.controller';
+  deleteIngridientsCategory,
+} from "../controllers/ingridientsCategory.controller";
 const router = Router();
 
 /**
@@ -33,7 +33,7 @@ const router = Router();
  *       400:
  *         description: Invalid input
  */
-router.post('/', createIngridientsCategory);
+router.post("/", createIngridientsCategory);
 /**
  * @swagger
  * /ingredients-category:
@@ -44,7 +44,7 @@ router.post('/', createIngridientsCategory);
  *       200:
  *         description: List of ingredient categories
  */
-router.get('/', getAllIngridientsCategory);
+router.get("/", getAllIngridientsCategory);
 /**
  * @swagger
  * /ingredients-category/{id}:
@@ -64,7 +64,7 @@ router.get('/', getAllIngridientsCategory);
  *       404:
  *         description: Ingredient category not found
  */
-router.get('/:id', getSingleIngridientsCategory);
+router.get("/:id", getSingleIngridientsCategory);
 /**
  * @swagger
  * /ingredients-category/{id}:
@@ -90,7 +90,7 @@ router.get('/:id', getSingleIngridientsCategory);
  *       404:
  *         description: Ingredient category not found
  */
-router.patch('/:id', updateIngridientsCategory);
+router.patch("/:id", updateIngridientsCategory);
 /**
  * @swagger
  * /ingredients-category/{id}:
@@ -110,6 +110,6 @@ router.patch('/:id', updateIngridientsCategory);
  *       404:
  *         description: Ingredient category not found
  */
-router.delete('/:id', deleteIngridientsCategory);
+router.delete("/:id", deleteIngridientsCategory);
 
 export default router;

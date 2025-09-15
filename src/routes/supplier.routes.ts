@@ -5,9 +5,15 @@
  *   description: Supplier management endpoints
  */
 
-import { Router } from 'express'
-import { createSupplier, deleteSupplier, getAllSupplier, getSingleSupplier, updateSupplier } from '../controllers/supplier.controller'
-const router = Router()
+import { Router } from "express";
+import {
+  createSupplier,
+  getAllSupplier,
+  getSingleSupplier,
+  updateSupplier,
+  deleteSupplier,
+} from "../controllers/supplier.controller";
+const router = Router();
 
 /**
  * @swagger
@@ -27,7 +33,7 @@ const router = Router()
  *       400:
  *         description: Invalid input
  */
-router.post('/', createSupplier)
+router.post("/", createSupplier);
 /**
  * @swagger
  * /supplier:
@@ -38,7 +44,7 @@ router.post('/', createSupplier)
  *       200:
  *         description: List of suppliers
  */
-router.get('/', getAllSupplier)
+router.get("/", getAllSupplier);
 /**
  * @swagger
  * /supplier/{id}:
@@ -58,7 +64,7 @@ router.get('/', getAllSupplier)
  *       404:
  *         description: Supplier not found
  */
-router.get('/:id', getSingleSupplier)
+router.get("/:id", getSingleSupplier);
 /**
  * @swagger
  * /supplier/{id}:
@@ -84,7 +90,7 @@ router.get('/:id', getSingleSupplier)
  *       404:
  *         description: Supplier not found
  */
-router.patch('/:id', updateSupplier)
+router.patch("/:id", updateSupplier);
 /**
  * @swagger
  * /supplier/{id}:
@@ -104,6 +110,6 @@ router.patch('/:id', updateSupplier)
  *       404:
  *         description: Supplier not found
  */
-router.delete('/:id', deleteSupplier)
+router.delete("/:id", deleteSupplier);
 
-export default router
+export default router;

@@ -3,7 +3,7 @@ import { IFoodsCategory } from "../interfaces/foodsCategory.interface";
 
 const foodsCategorySchema = new Schema<IFoodsCategory>({
   category_name: { type: String, required: true, trim: true },
-  slug: { type: String, required: true, trim: true, unique: true },
+  slug: { type: String, required: true, trim: true },
   description: { type: String, required: true },
   parent_id: { type: String, default: null },
   menu: { type: String, enum: ["0", "1"], default: "0" },
@@ -21,8 +21,5 @@ foodsCategorySchema.pre("save", function (next) {
   next();
 });
 
-const FoodsCategory: Model<IFoodsCategory> = mongoose.model<IFoodsCategory>(
-  "FoodsCategory",
-  foodsCategorySchema
-);
+const FoodsCategory: Model<IFoodsCategory> = mongoose.model<IFoodsCategory>("FoodsCategory", foodsCategorySchema);
 export default FoodsCategory;

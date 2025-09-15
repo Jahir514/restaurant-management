@@ -5,9 +5,14 @@
  *   description: Ingredients management endpoints
  */
 
-
-import { Router } from 'express';
-import { ingridientsController } from '../controllers/ingridients.controller';
+import { Router } from "express";
+import {
+  createIngridient,
+  getAllIngridients,
+  getSingleIngridient,
+  updateIngridient,
+  deleteIngridient,
+} from "../controllers/ingridients.controller";
 const router = Router();
 
 /**
@@ -28,7 +33,7 @@ const router = Router();
  *       400:
  *         description: Invalid input
  */
-router.post('/', ingridientsController.create.bind(ingridientsController));
+router.post("/", createIngridient);
 /**
  * @swagger
  * /ingredients:
@@ -39,7 +44,7 @@ router.post('/', ingridientsController.create.bind(ingridientsController));
  *       200:
  *         description: List of ingredients
  */
-router.get('/', ingridientsController.getAll.bind(ingridientsController));
+router.get("/", getAllIngridients);
 /**
  * @swagger
  * /ingredients/{id}:
@@ -59,7 +64,7 @@ router.get('/', ingridientsController.getAll.bind(ingridientsController));
  *       404:
  *         description: Ingredient not found
  */
-router.get('/:id', ingridientsController.getOne.bind(ingridientsController));
+router.get("/:id", getSingleIngridient);
 /**
  * @swagger
  * /ingredients/{id}:
@@ -85,7 +90,7 @@ router.get('/:id', ingridientsController.getOne.bind(ingridientsController));
  *       404:
  *         description: Ingredient not found
  */
-router.patch('/:id', ingridientsController.update.bind(ingridientsController));
+router.patch("/:id", updateIngridient);
 /**
  * @swagger
  * /ingredients/{id}:
@@ -105,6 +110,6 @@ router.patch('/:id', ingridientsController.update.bind(ingridientsController));
  *       404:
  *         description: Ingredient not found
  */
-router.delete('/:id', ingridientsController.delete.bind(ingridientsController));
+router.delete("/:id", deleteIngridient);
 
 export default router;

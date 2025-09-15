@@ -6,7 +6,7 @@
  */
 
 import { Router } from "express";
-import { foodController } from "../controllers/foods.controller";
+import { createFood, getAllFood, getSingleFood, updateFood, deleteFood } from "../controllers/foods.controller";
 const router = Router();
 
 /**
@@ -27,7 +27,7 @@ const router = Router();
  *       400:
  *         description: Invalid input
  */
-router.post("/", foodController.create.bind(foodController));
+router.post("/", createFood);
 /**
  * @swagger
  * /foods:
@@ -38,7 +38,7 @@ router.post("/", foodController.create.bind(foodController));
  *       200:
  *         description: List of foods/package menus
  */
-router.get("/", foodController.getAll.bind(foodController));
+router.get("/", getAllFood);
 /**
  * @swagger
  * /foods/{id}:
@@ -58,7 +58,7 @@ router.get("/", foodController.getAll.bind(foodController));
  *       404:
  *         description: Food not found
  */
-router.get("/:id", foodController.getOne.bind(foodController));
+router.get("/:id", getSingleFood);
 /**
  * @swagger
  * /foods/{id}:
@@ -84,7 +84,7 @@ router.get("/:id", foodController.getOne.bind(foodController));
  *       404:
  *         description: Food not found
  */
-router.patch("/:id", foodController.update.bind(foodController));
+router.patch("/:id", updateFood);
 /**
  * @swagger
  * /foods/{id}:
@@ -104,6 +104,6 @@ router.patch("/:id", foodController.update.bind(foodController));
  *       404:
  *         description: Food not found
  */
-router.delete("/:id", foodController.delete.bind(foodController));
+router.delete("/:id", deleteFood);
 
 export default router;

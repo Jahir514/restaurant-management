@@ -10,7 +10,6 @@ const ingridientsCategorySchema = new Schema<IIngridientsCategory>(
     name: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     status: {
@@ -63,9 +62,8 @@ ingridientsCategorySchema.index({ status: 1 });
  */
 
 //create model
-const IngridientsCategory: Model<IIngridientsCategory> =
-  mongoose.model<IIngridientsCategory>(
-    "IngridentsCategory",
-    ingridientsCategorySchema
-  );
+const IngridientsCategory: Model<IIngridientsCategory> = mongoose.model<IIngridientsCategory>(
+  "IngridentsCategory",
+  ingridientsCategorySchema
+);
 export default IngridientsCategory;

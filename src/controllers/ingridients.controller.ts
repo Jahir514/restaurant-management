@@ -1,21 +1,52 @@
-import { BaseController } from "./base.controller";
-import ingridientsService from "../services/ingridients.service";
+import { Request, Response, NextFunction } from "express";
+import * as ingridientsService from "../services/ingridients.service";
 
-/**
- * IngridientsController
- *
- * Extends BaseController to provide standard CRUD endpoints for ingredients.
- * Custom endpoints can be added as needed.
- */
-export class IngridientsController extends BaseController<typeof ingridientsService> {
-  constructor() {
-    super(ingridientsService);
+export const createIngridient = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.body;
+    const result = await ingridientsService.createIngridients(data);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
   }
+};
 
-  // If you have custom endpoints, add them here as methods
-  // Example:
-  // async customEndpoint(req: Request, res: Response, next: NextFunction) { ... }
-}
+export const getAllIngridients = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await ingridientsService.getAllIngridients();
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
-// Export a singleton instance for use in routes
-export const ingridientsController = new IngridientsController();
+export const getSingleIngridient = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const ingridientId = req.params.id;
+    const result = await ingridientsService.getSingleIngridients(ingridientId);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateIngridient = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const ingridientId = req.params.id;
+    const data = req.body;
+    const result = await ingridientsService.updateIngridients(ingridientId, data);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteIngridient = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const ingridientId = req.params.id;
+    const result = await ingridientsService.deleteIngridients(ingridientId);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};

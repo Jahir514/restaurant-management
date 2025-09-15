@@ -6,7 +6,13 @@
  */
 
 import { Router } from "express";
-import { restaurantTableController } from "../controllers/restaurantTable.controller";
+import {
+  createRestaurantTable,
+  getAllRestaurantTables,
+  getSingleRestaurantTable,
+  updateRestaurantTable,
+  deleteRestaurantTable,
+} from "../controllers/restaurantTable.controller";
 const router = Router();
 
 /**
@@ -27,10 +33,7 @@ const router = Router();
  *       400:
  *         description: Invalid input
  */
-router.post(
-  "/",
-  restaurantTableController.create.bind(restaurantTableController)
-);
+router.post("/", createRestaurantTable);
 /**
  * @swagger
  * /restaurant-table:
@@ -41,10 +44,7 @@ router.post(
  *       200:
  *         description: List of restaurant tables
  */
-router.get(
-  "/",
-  restaurantTableController.getAll.bind(restaurantTableController)
-);
+router.get("/", getAllRestaurantTables);
 /**
  * @swagger
  * /restaurant-table/{id}:
@@ -64,10 +64,7 @@ router.get(
  *       404:
  *         description: Restaurant table not found
  */
-router.get(
-  "/:id",
-  restaurantTableController.getOne.bind(restaurantTableController)
-);
+router.get("/:id", getSingleRestaurantTable);
 /**
  * @swagger
  * /restaurant-table/{id}:
@@ -93,10 +90,7 @@ router.get(
  *       404:
  *         description: Restaurant table not found
  */
-router.patch(
-  "/:id",
-  restaurantTableController.update.bind(restaurantTableController)
-);
+router.patch("/:id", updateRestaurantTable);
 /**
  * @swagger
  * /restaurant-table/{id}:
@@ -116,9 +110,6 @@ router.patch(
  *       404:
  *         description: Restaurant table not found
  */
-router.delete(
-  "/:id",
-  restaurantTableController.delete.bind(restaurantTableController)
-);
+router.delete("/:id", deleteRestaurantTable);
 
 export default router;

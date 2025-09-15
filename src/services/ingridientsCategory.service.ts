@@ -3,13 +3,12 @@ import {
   IIngridientsCategory,
   IUpdateIngridientsCategory,
 } from "../interfaces/ingridientsCategory.interface";
-// Response types: use DataResponse<IIngridientsCategory> and PaginatedResponse<IIngridientsCategory> from '../types/response.types'
 import { DataResponse, PaginatedResponse } from "../types/response.types";
 import IngridientsCategory from "../models/ingridientsCategory.model";
 import { BaseError } from "../errors/BaseError";
 
 //ingridients category create service
-const createIngridientsCategory = async (
+export const createIngridientsCategory = async (
   data: ICreateIngridientsCategory
 ): Promise<DataResponse<IIngridientsCategory>> => {
   const { name, status } = data;
@@ -48,7 +47,7 @@ const createIngridientsCategory = async (
 };
 
 //all ingridients category get service
-const getAllIngridientsCategory = async (): Promise<PaginatedResponse<IIngridientsCategory>> => {
+export const getAllIngridientsCategory = async (): Promise<PaginatedResponse<IIngridientsCategory>> => {
   const ingridientsCategory: IIngridientsCategory[] = await IngridientsCategory.find();
   return {
     success: true,
@@ -63,7 +62,7 @@ const getAllIngridientsCategory = async (): Promise<PaginatedResponse<IIngridien
   };
 };
 //single ingridients category get service
-const getSingleIngridientsCategory = async (
+export const getSingleIngridientsCategory = async (
   ingridientsCategoryId: string
 ): Promise<DataResponse<IIngridientsCategory>> => {
   const ingridientsCategory: IIngridientsCategory | null = await IngridientsCategory.findOne({
@@ -81,7 +80,7 @@ const getSingleIngridientsCategory = async (
 };
 
 //ingridients category update service
-const updateIngridientsCategory = async (
+export const updateIngridientsCategory = async (
   ingridientsCategoryId: string,
   data: IUpdateIngridientsCategory
 ): Promise<DataResponse<IIngridientsCategory>> => {
@@ -115,7 +114,7 @@ const updateIngridientsCategory = async (
   }
 };
 //ingridients category delete service
-const deleteIngridientsCategory = async (ingridientsCategoryId: string): Promise<DataResponse<null>> => {
+export const deleteIngridientsCategory = async (ingridientsCategoryId: string): Promise<DataResponse<null>> => {
   // get ingridients category that needs to delete
   const ingridientsCategory: IIngridientsCategory | null = await IngridientsCategory.findOne({
     _id: ingridientsCategoryId,
@@ -142,12 +141,4 @@ const deleteIngridientsCategory = async (ingridientsCategoryId: string): Promise
       data: null,
     };
   }
-};
-
-export default {
-  createIngridientsCategory,
-  getAllIngridientsCategory,
-  getSingleIngridientsCategory,
-  updateIngridientsCategory,
-  deleteIngridientsCategory,
 };

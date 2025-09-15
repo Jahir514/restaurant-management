@@ -99,10 +99,7 @@ ingridientsSchema.statics.branchFilter = function (branchId?: string) {
 };
 
 // Create model
-const Ingridients: Model<IIngridients> = mongoose.model<IIngridients>(
-  "Ingridients",
-  ingridientsSchema
-);
+const Ingridients: Model<IIngridients> = mongoose.model<IIngridients>("Ingridients", ingridientsSchema);
 export default Ingridients;
 
 /**
