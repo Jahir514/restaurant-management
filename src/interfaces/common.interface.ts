@@ -12,8 +12,9 @@ export interface IPagination {
 export interface IQueryFilters {
   search?: string;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
   isActive?: boolean;
+  sort?: Record<string, 1 | -1>;
 }

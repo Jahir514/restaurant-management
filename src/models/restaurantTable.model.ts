@@ -2,7 +2,7 @@ import mongoose, { Schema, Model } from "mongoose";
 import { IRestaurantTable } from "../interfaces/restaurantTable.interface";
 
 const restaurantTableSchema = new Schema<IRestaurantTable>({
-  name: { type: String, required: true, trim: true, index: true },
+  name: { type: String, required: true, trim: true },
   description: { type: String, default: null },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },

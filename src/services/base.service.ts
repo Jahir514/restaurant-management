@@ -1,9 +1,12 @@
-import { Document, Model } from 'mongoose';
-import { ICrudOperations } from '../interfaces/crud.interface';
-import { IQueryFilters } from '../interfaces/common.interface';
-import { DatabaseError } from '../errors/DatabaseError';
+import { Document, Model } from "mongoose";
+import { ICrudOperations } from "../interfaces/crud.interface";
+import { IQueryFilters } from "../interfaces/common.interface";
+import { DatabaseError } from "../errors/DatabaseError";
+import { logger } from "../config/logger.config";
 
-export abstract class BaseService<T extends Document> implements ICrudOperations<T> {
+export abstract class BaseService<T extends Document>
+  implements ICrudOperations<T>
+{
   constructor(protected readonly model: Model<T>) {}
 
   async create(data: Partial<T>): Promise<T> {
@@ -31,7 +34,7 @@ export abstract class BaseService<T extends Document> implements ICrudOperations
     }
   }
 
-  async findAll(filters?: IQueryFilters) {
+  async findAll(filters: IQueryFilters = {}) {
     try {
       const page = filters?.page || 1;
       const limit = filters?.limit || 10;
@@ -42,23 +45,25 @@ export abstract class BaseService<T extends Document> implements ICrudOperations
         query.isActive = filters.isActive;
       }
       if (filters?.search) {
-        query.name = { $regex: filters.search, $options: 'i' };
+        query.name = { $regex: filters.search, $options: "i" };
       }
 
+      const sort = filters?.sort || {};
+      logger.info(
+        `Fetching ${this.model.modelName} list with filters: ${JSON.stringify(
+          filters
+        )}`
+      );
       const [items, total] = await Promise.all([
-        this.model
-          .find(query)
-          .skip(skip)
-          .limit(limit)
-          .sort({ [filters?.sortBy || 'createdAt']: filters?.sortOrder || 'desc' }),
-        this.model.countDocuments(query)
+        this.model.find(query).skip(skip).limit(limit).sort(sort),
+        this.model.countDocuments(query),
       ]);
 
       return {
         items,
         total,
         page,
-        limit
+        limit,
       };
     } catch (error) {
       throw new DatabaseError(`Failed to fetch ${this.model.modelName} list`);

@@ -50,8 +50,8 @@ class FoodService extends BaseService<IFood> {
 
   // Business logic for getting all foods/package menus
   async getAllFood(): Promise<PaginatedResponse<IFood>> {
-    // You can add business logic for filtering, pagination, etc. here
-    const result = await this.findAll();
+    // Use the new sort property in findAll
+    const result = await this.findAll({ sort: { created_at: -1 } });
     return {
       success: true,
       message: result.items.length === 0 ? "No food/package menu found." : "",

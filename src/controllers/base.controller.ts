@@ -75,7 +75,10 @@ export class BaseController<TService> {
    */
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await (this.service as any).update(req.params.id, req.body);
+      const result = await (this.service as any).update(
+        req.params.id,
+        req.body
+      );
       if (!result) {
         return res.status(404).json({ message: "Not found" });
       }

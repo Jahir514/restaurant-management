@@ -17,7 +17,6 @@ const ingridientsCategorySchema = new Schema<IIngridientsCategory>(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
-      index: true,
     },
   },
   {
@@ -64,8 +63,9 @@ ingridientsCategorySchema.index({ status: 1 });
  */
 
 //create model
-const IngridientsCategory: Model<IIngridientsCategory> = mongoose.model<IIngridientsCategory>(
-  "IngridentsCategory",
-  ingridientsCategorySchema
-);
+const IngridientsCategory: Model<IIngridientsCategory> =
+  mongoose.model<IIngridientsCategory>(
+    "IngridentsCategory",
+    ingridientsCategorySchema
+  );
 export default IngridientsCategory;

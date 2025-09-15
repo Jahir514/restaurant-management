@@ -86,7 +86,6 @@ const branchSchema = new Schema<IBranch>(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
-      index: true,
     },
   },
   {

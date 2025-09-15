@@ -9,31 +9,26 @@ const ingridientsSchema = new Schema<IIngridients>(
     serialNo: {
       type: Number,
       required: true,
-      index: true,
     },
     name: {
       type: String,
       required: true,
       trim: true,
-      index: true,
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: "IngridientsCategory",
       required: true,
-      index: true,
     },
     supplier: {
       type: [Schema.Types.ObjectId],
       ref: "Supplier",
       required: false,
-      index: true,
     },
     branch: {
       type: Schema.Types.ObjectId,
       ref: "Branch",
       required: config.MULTI_BRANCH,
-      index: true,
     },
     costPrice: {
       type: Number,
@@ -72,7 +67,6 @@ const ingridientsSchema = new Schema<IIngridients>(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
-      index: true,
     },
     stockHistory: [
       {
@@ -105,7 +99,10 @@ ingridientsSchema.statics.branchFilter = function (branchId?: string) {
 };
 
 // Create model
-const Ingridients: Model<IIngridients> = mongoose.model<IIngridients>("Ingridients", ingridientsSchema);
+const Ingridients: Model<IIngridients> = mongoose.model<IIngridients>(
+  "Ingridients",
+  ingridientsSchema
+);
 export default Ingridients;
 
 /**

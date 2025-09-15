@@ -4,19 +4,18 @@ import { IFood } from "../interfaces/foods.interface";
 // Improved schema for foods (package menu)
 const foodSchema = new Schema<IFood>(
   {
-    name: { type: String, required: true, trim: true, index: true },
+    name: { type: String, required: true, trim: true },
     slug: {
       type: String,
       required: true,
       trim: true,
       unique: true,
-      index: true,
     },
     description: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
     discount_price: { type: Number, default: null, min: 0 },
-    status: { type: String, enum: ["0", "1"], default: "1", index: true },
-    featured: { type: String, enum: ["0", "1"], default: "0", index: true },
+    status: { type: String, enum: ["0", "1"], default: "1" },
+    featured: { type: String, enum: ["0", "1"], default: "0" },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
   },

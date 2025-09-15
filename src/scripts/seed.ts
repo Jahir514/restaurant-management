@@ -22,6 +22,33 @@ async function seed() {
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB");
 
+    // Seed foods/package menus
+    await Food.insertMany([
+      {
+        name: "Tahari",
+        slug: "tahari",
+        description: "Beef Tahari",
+        price: 260.0,
+        discount_price: null,
+        status: "1",
+        featured: "1",
+        created_at: new Date("2022-10-23T23:01:12.000Z"),
+        updated_at: new Date("2023-10-04T15:43:13.000Z"),
+      },
+      {
+        name: "Chicken Biryani",
+        slug: "chicken-biryani",
+        description: "Chicken Biryani, Raita, Drinks",
+        price: 320.0,
+        discount_price: 300.0,
+        status: "1",
+        featured: "0",
+        created_at: new Date("2022-11-01T12:00:00.000Z"),
+        updated_at: new Date("2023-10-05T10:20:00.000Z"),
+      },
+    ]);
+    console.log("Foods/package menus seeded");
+
     // Seed branches
     const branches = await Branch.insertMany([
       {
@@ -106,33 +133,6 @@ async function seed() {
       },
     ]);
     console.log("Ingredients seeded");
-
-    // Seed foods/package menus
-    await Food.insertMany([
-      {
-        name: "Tahari",
-        slug: "tahari",
-        description: "Beef Tahari",
-        price: 260.0,
-        discount_price: null,
-        status: "1",
-        featured: "1",
-        created_at: new Date("2022-10-23T23:01:12.000Z"),
-        updated_at: new Date("2023-10-04T15:43:13.000Z"),
-      },
-      {
-        name: "Chicken Biryani",
-        slug: "chicken-biryani",
-        description: "Chicken Biryani, Raita, Drinks",
-        price: 320.0,
-        discount_price: 300.0,
-        status: "1",
-        featured: "0",
-        created_at: new Date("2022-11-01T12:00:00.000Z"),
-        updated_at: new Date("2023-10-05T10:20:00.000Z"),
-      },
-    ]);
-    console.log("Foods/package menus seeded");
 
     await mongoose.disconnect();
     console.log("Seeding complete.");
